@@ -1,0 +1,167 @@
+﻿{include file="public/_meta" /}
+
+	<title>角色管理 - 管理员管理 </title>
+	<meta name="keywords" content="h-ui.admin.pro v1.0,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+	<meta name="description" content="h-ui.admin.pro v1.0，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			管理员管理
+			<span class="c-gray en">/</span>
+			管理员列表
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<div class="clearfix">
+						<span class="f-l">
+							<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+							<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','{:url('adminRoleAdd')}')"><i class="Hui-iconfont">&#xe600;</i> 添加角色</a>
+						</span>
+						<span class="f-r">共有数据：<strong>{$count}</strong> 条</span>
+					</div>
+					<div class="mt-20 clearfix">
+						<table class="table table-border table-bordered table-hover table-bg">
+							<thead>
+								<tr>
+									<th scope="col" colspan="8">角色管理</th>
+								</tr>
+								<tr class="text-c">
+									<th width="25"><input type="checkbox" value="" name=""></th>
+									<th width="40">ID</th>
+									<th width="200">角色名</th>
+									<th>用户列表</th>
+									<th>创建时间</th>
+									<th>更新时间</th>
+									<th width="300">描述</th>
+									<th width="70">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+
+							{volist name="list" id="v" empty="暂时没有数据"}
+								<tr class="text-c">
+									<td><input type="checkbox" value="" name=""></td>
+									<td>{$v.id}</td>
+									<td>{$v.role_name}</td>
+									<td>guster</td>
+									<td>{$v.create_time|date='Y-m-d H:i:s'}</td>
+									<td>{$v.update_time|date='Y-m-d H:i:s'}</td>
+									<td>{$v.note_mark}</td>
+									<td class="f-14"><a title="编辑" class="admin_role_edit" href="{:url('admin/adminRoleEdit',['id'=>$v.id])}" data-id="{$v.id}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" data-id="{$v.id}" href="#" class="ml-5 delete_btn" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+								</tr>
+							{/volist}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+{include file="public/_footer" /}
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__HULITONG__/lib/datatables/1.10.15/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="__HULITONG__/lib/laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="__HULITONG__/static/business/js/main.js"></script>
+	<!--/请在上方写此页面业务相关的脚本-->
+  <script type="text/javascript">
+	$(function(){
+      // 全选 页面调用
+      $(".table").HuicheckAll(
+        {
+          checkboxAll: 'thead input[type="checkbox"]',
+          checkbox: 'tbody input[type="checkbox"]'
+        },
+        function(checkedInfo) {
+          console.log(checkedInfo);
+        }
+      );
+
+      // 编辑
+      $('.admin_role_edit').click(function(){
+      	/**
+      	 * 获取 data-id="value" 的值得两种方式
+      	 * 一种是 data('id')
+      	 * 另一种是 attr('data-id')
+      	 * @type {[type]}
+      	 */
+      	var id = $(this).attr('data-id');
+      	// var id = $(this).data('id');
+      	$.ajax({
+      		url:'{:url("Admin/adminRoleEdit")}',
+      		type:'POST',
+      		data:{id:id},
+      		dataType:'JSON',
+      		success:function(data){
+      			if (data.code == 1) {
+      				layer.msg(data.msg,{
+      					icon:6,
+      					time:3000,
+      				},function(){
+      					location.href = data.url;
+      				});
+      			}else{
+      				layer.open({
+      					title:'角色编辑失败',
+      					content:data.msg,
+      					icon:5,
+      					time:3000,
+      					anim:6,
+      				});
+      			}
+      		}
+      	});
+      });
+
+      // 删除
+
+      $('.delete_btn').click(function(){
+      	/**
+      	 * 获取 data-id="value" 的值得两种方式
+      	 * 一种是 data('id')
+      	 * 另一种是 attr('data-id')
+      	 * @type {[type]}
+      	 */
+      	var id = $(this).attr('data-id');
+      	// var id = $(this).data('id');
+      	layer.confirm('确定删除角色吗？',{
+      		title:'删除角色',
+      		icon:3,
+      	},function(index){
+      		layer.close(index);
+      		$.ajax({
+	      		url:'{:url("Admin/deleteRole")}',
+	      		type:'POST',
+	      		data:{id:id},
+	      		dataType:'JSON',
+	      		success:function(data){
+	      			if (data.code == 1) {
+	      				layer.msg(data.msg,{
+	      					icon:6,
+	      					time:3000,
+	      				},function(){
+	      					location.href = data.url;
+	      				});
+	      			}else{
+	      				layer.open({
+	      					title:'角色删除失败',
+	      					content:data.msg,
+	      					icon:5,
+	      					time:3000,
+	      					anim:6,
+	      				});
+	      			}
+	      		}
+      		});
+      	});
+      });
+
+	});
+	</script>
+</body>
+</html>
