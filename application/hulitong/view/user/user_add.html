@@ -1,25 +1,4 @@
-<!--_meta 作为公共模版分离出去-->
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8">
-	<meta name="renderer" content="webkit|ie-comp|ie-stand">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-	<meta http-equiv="Cache-Control" content="no-siteapp" />
-	<link rel="Bookmark" href="favicon.ico" >
-	<link rel="Shortcut Icon" href="favicon.ico" />
-	<!--[if lt IE 9]>
-	<script type="text/javascript" src="lib/html5.js"></script>
-	<script type="text/javascript" src="lib/respond.min.js"></script>
-	<![endif]-->
-	<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-	<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.9/iconfont.css" />
-	<link rel="stylesheet" type="text/css" href="static/business/css/style.css" />
-	<!--[if IE 6]>
-	<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
-	<script>DD_belatedPNG.fix('*');</script><![endif]-->
-	<!--/meta 作为公共模版分离出去-->
+{include file="public/_meta" /}
 
 	<title>添加用户 - h-ui.admin.pro v1.0</title>
 	<meta name="keywords" content="h-ui.admin.pro v1.0,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
@@ -37,18 +16,24 @@
 					</div>
 				</div>
 				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>昵称名：</label>
+					<div class="form-controls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="nicename" name="nicename">
+					</div>
+				</div>
+				<div class="row clearfix">
 					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
 					<div class="form-controls col-xs-8 col-sm-9 skin-minimal">
 						<div class="radio-box">
-							<input name="sex" type="radio" id="sex-1" checked>
+							<input name="sex" type="radio" value="1" id="sex-1">
 							<label for="sex-1">男</label>
 						</div>
 						<div class="radio-box">
-							<input type="radio" id="sex-2" name="sex">
+							<input type="radio" id="sex-2" value="2" name="sex">
 							<label for="sex-2">女</label>
 						</div>
 						<div class="radio-box">
-							<input type="radio" id="sex-3" name="sex">
+							<input type="radio" id="sex-3" value="3"name="sex" checked>
 							<label for="sex-3">保密</label>
 						</div>
 					</div>
@@ -56,7 +41,7 @@
 				<div class="row clearfix">
 					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
 					<div class="form-controls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="" placeholder="" id="mobile" name="mobile">
+						<input type="text" class="input-text" value="" placeholder="" id="mobile" name="tel">
 					</div>
 				</div>
 				<div class="row clearfix">
@@ -65,7 +50,7 @@
 						<input type="text" class="input-text" placeholder="@" name="email" id="email">
 					</div>
 				</div>
-				<div class="row clearfix">
+			<!-- 	<div class="row clearfix">
 					<label class="form-label col-xs-4 col-sm-3">附件：</label>
 					<div class="form-controls col-xs-8 col-sm-9"> <span class="btn-upload form-group">
 						<input class="input-text upload-url" type="text" name="uploadfile" id="uploadfile" readonly nullmsg="请添加附件！" style="width:200px">
@@ -83,11 +68,11 @@
 							<option value="3">广州</option>
 						</select>
 						</span> </div>
-				</div>
+				</div> -->
 				<div class="row clearfix">
 					<label class="form-label col-xs-4 col-sm-3">备注：</label>
 					<div class="form-controls col-xs-8 col-sm-9">
-						<textarea name="beizhu" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="textarealength(this,100)"></textarea>
+						<textarea name="note_mark" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符"></textarea>
 						<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
 					</div>
 				</div>
@@ -100,55 +85,32 @@
 			</div>
 		</div>
 	</div>
-	<!--_footer 作为公共模版分离出去-->
-	<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
-	<script type="text/javascript" src="lib/layer/3.1.1/layer.js"></script>
-	<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
-	<!--/_footer /作为公共模版分离出去-->
+	{include file="public/_footer" /}
 
-	<!--请在下方写此页面业务相关的脚本-->
-	<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
-	<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
-	<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 	<script type="text/javascript">
 		$(function(){
-			$('.skin-minimal input').iCheck({
-				checkboxClass: 'icheckbox-blue',
-				radioClass: 'iradio-blue',
-				increaseArea: '20%'
-			});
-
-			$("#form-member-add").validate({
-				rules:{
-					username:{
-						required:true,
-						minlength:2,
-						maxlength:16
-					},
-					sex:{
-						required:true,
-					},
-					mobile:{
-						required:true,
-						isMobile:true,
-					},
-					email:{
-						required:true,
-						email:true,
-					},
-					uploadfile:{
-						required:true,
-					},
-
-				},
-				onkeyup:false,
-				focusCleanup:true,
-				success:"valid",
-				submitHandler:function(form){
-					$(form).ajaxSubmit();
-					var index = parent.layer.getFrameIndex(window.name);
-					parent.location.replace(parent.location.href)
-					parent.layer.close(index);
+			$.ajax({
+				url:'{:url('User/userAdd')}',
+				dataType:'json',
+				type:'POST',
+				data:$('form').serialize(),
+				success:function(data){
+					if (data.code == 1) {
+						layer.msg(data.msg,{
+							icon:6,
+							time:3000,
+						},function(){
+							location.href = data.url;
+						});
+					}else{
+						layer.open({
+							title:'添加用户失败',
+							content:data.msg,
+							icon:5,
+							time:2000,
+							anim:6,
+						});
+					}
 				}
 			});
 		});

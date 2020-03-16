@@ -1,17 +1,12 @@
 <?php
 namespace app\hulitong\controller;
-
 use think\Controller;
 use think\Request;
 use think\Db;
-
-/**
- * summary
- */
+use app\common\model\Root as M;
 class Admin extends Controller
 {
     
-
     /*
      *登录页面显示
      */
@@ -67,15 +62,19 @@ class Admin extends Controller
             ];
             // halt($data);
             $result = model('root')->add($data);
-            if ($result) {
-                return $this->success('添加管理员成功2','hulitong/admin/adminList');
+            // halt($result);
+            if ($result == 1) {
+                return $this->success('添加管理员成功','hulitong/admin/adminList');
             }else{
                 return $this->error($result);
             }
-            
+
+        // }else{
+        //     return '非法请求';
         }
          
-       return $this->fetch('');
+            return $this->fetch('');
+       
     }
 
 

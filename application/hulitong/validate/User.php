@@ -2,7 +2,7 @@
 namespace app\hulitong\validate;
 use think\Validate;
 
-class Root extends Validate
+class User extends Validate
 {
 	protected $rule = [
 		'username' => 'require|length:4,22|alphaNum|unique:root',
@@ -13,8 +13,6 @@ class Root extends Validate
 		'tel' => 'require|length:11|number',
 		'sex' => 'require',
 		'email' => 'require|email',
-		'admin_role' => 'require',
-		'admin_premission' => 'require',
 		'note_mark' => 'require',
 	];
 
@@ -39,12 +37,10 @@ class Root extends Validate
 		'sex.require' => '性别不能为空',
 		'email.require' => '邮箱不能为空',
 		'email.email' => '邮箱格式错误',
-		'admin_role.require' => '角色不能为空，请选择',
-		'admin_premission.require' => '权限不能为空，请选择',
 		'note_mark.require' => '备注不能为空',
 	];
 
 	protected $scene = [
-		'add' =>  ['username','password','repassword','nicename','tel','sex','email','admin_role','note_mark'],
+		'add' =>  ['username','nicename','tel','sex','email','note_mark'],
 	];
 }

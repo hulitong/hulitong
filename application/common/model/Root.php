@@ -4,6 +4,7 @@ namespace app\common\model;
 use  think\Model;
 use think\model\concern\SoftDelete;
 
+
 Class Root extends Model{
 
 	use SoftDelete;
@@ -19,7 +20,7 @@ Class Root extends Model{
 		}
 
 		$result = $this->allowField(true)->save($data);
-
+		
 		if ($result) {
 			return 1;
 		}else{
