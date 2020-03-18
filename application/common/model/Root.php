@@ -27,4 +27,35 @@ Class Root extends Model{
 			return '添加管理员失败';
 		}
 	}
+
+
+	/**
+	 * 登录验证
+	 */
+	
+	public function login($data)
+	{
+		$validate = new \app\hulitong\validate\Root();
+		if (!$validate->scene('login')->check($data)) {
+			return $validate->getError();
+		}
+		$result = $this->where($data)->find();
+		if ($result) {
+
+			if ($result['status' != 1]) {
+				return '此账户被禁用了';
+			}
+			
+			$sessionData = [
+				'id' => $result['id'],
+				'nicename' => $result['nicename'],
+				'is_super' => $result['is_super'],
+			];
+
+			session('admin',$sessionData);
+			return 1;
+		}else{
+			return '登录失败(账号或者密码错误！)';
+		}
+	}
 }

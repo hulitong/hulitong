@@ -4,7 +4,7 @@ namespace app\common\model;
 use think\Model;
 
 /**
- * summary
+ * 对user表的操作
  */
 class User extends Model
 {

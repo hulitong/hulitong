@@ -20,7 +20,20 @@ class Admin extends Controller
      */
     public function checkLogin()
     {
-    	
+    	if (request()->isAjax()) {
+            
+            $data = [
+                'username' => input('post.username'),
+                'password' => input('post.password'),
+            ];
+
+            $result = model('root')->login($data);
+            if ($result == 1) {
+                return $this->success('恭喜登录成功','hulitong/Index/welcome');
+            }else{
+                return $this->error($result);
+            }
+        }
     }
 
     /*

@@ -1,12 +1,10 @@
 <?php
 namespace app\hulitong\controller;
 
-use think\Controller;
-
 /**
  * summary
  */
-class Index extends Controller
+class Index extends Base
 {
     /**
      * summary

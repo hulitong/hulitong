@@ -45,5 +45,6 @@ class Root extends Validate
 
 	protected $scene = [
 		'add' =>  ['username','password','repassword','nicename','tel','sex','email','admin_role','note_mark'],
+		'login' => ['username','password'],
 	];
 }
