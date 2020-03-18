@@ -37,6 +37,13 @@ class Admin extends Controller
      */
     public function adminList()
     {
+        $list = model('root')->paginate(10);
+        $this->assign('list',$list);
+
+        //查询root表里有多少条数据
+        $count = model('root')->count();
+        $this->assign('count',$count);
+        
         return $this->fetch('');
     }
 
@@ -77,8 +84,26 @@ class Admin extends Controller
        
     }
 
+    /**
+     * 删除管理员
+     */
+    public function adminDel()
+    {
+        if (request()->isAjax()) {
+            $id = input('param.id');
 
+            $delinfo = model('root')->where('id',$id)->find();
+            if ($delinfo) {
+                $res = $delinfo->delete();
 
+                if ($res) {
+                    return $this->success('删除管理员成功','adminList');
+                }else{
+                    return $this->error('删除管理员失败');
+                }
+            }
+        }
+    }
     /**
      * 角色管理--
      */

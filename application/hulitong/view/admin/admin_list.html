@@ -34,18 +34,19 @@
 							<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
 							<a href="javascript:;" onclick="admin_add('添加管理员','{:url('adminAdd')}')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
 						</span>
-						<span class="f-r">共有数据：<strong>54</strong> 条</span>
+						<span class="f-r">共有数据：<strong>{$count}</strong> 条</span>
 					</div>
 					<div class="mt-20 clearfix">
 						<table class="table table-border table-bordered table-bg table-hover table-sort">
 							<thead>
 								<tr>
-									<th scope="col" colspan="9">员工列表</th>
+									<th scope="col" colspan="10">员工列表</th>
 								</tr>
 								<tr class="text-c">
 									<th width="25"><input type="checkbox" name="" value=""></th>
 									<th width="40">ID</th>
 									<th width="150">登录名</th>
+									<th width="150">性别</th>
 									<th width="90">手机</th>
 									<th width="150">邮箱</th>
 									<th>角色</th>
@@ -55,28 +56,26 @@
 								</tr>
 							</thead>
 							<tbody>
+								{volist name="list" id="v"}
 								<tr class="text-c">
 									<td><input type="checkbox" value="1" name=""></td>
-									<td>1</td>
-									<td>admin</td>
-									<td>13000000000</td>
-									<td>admin@mail.com</td>
-									<td>超级管理员</td>
-									<td>2014-6-11 11:11:42</td>
+									<td>{$v.id}</td>
+									<td>{$v.username}</td>
+									<td>
+										{switch name="$v.sex"}
+											{case value="1"}男{/case}
+											{case value="2"}女{/case}
+											{case value="3"}保密{/case}
+										{/switch}
+									</td>
+									<td>{$v.tel}</td>
+									<td>{$v.email}</td>
+									<td>{$v.admin_role}</td>
+									<td>{$v.create_time|date="Y-m-d H:i:s"}</td>
 									<td class="td-status"><span class="label label-success radius">已启用</span></td>
-									<td class="td-manage"><a style="text-decoration:none" onClick="admin_stop(this,'10001')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','admin-add.html','1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+									<td class="td-manage"><a style="text-decoration:none" onClick="admin_stop(this,'10001')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','admin-add.html','1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" class="ml-5 admin_del" data-id="{$v.id}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 								</tr>
-								<tr class="text-c">
-									<td><input type="checkbox" value="2" name=""></td>
-									<td>2</td>
-									<td>zhangsan</td>
-									<td>13000000000</td>
-									<td>admin@mail.com</td>
-									<td>栏目编辑</td>
-									<td>2014-6-11 11:11:42</td>
-									<td class="td-status"><span class="label radius">已停用</span></td>
-									<td class="td-manage"><a style="text-decoration:none" onClick="admin_start(this,'10001')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe615;</i></a> <a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','admin-add.html','2')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
-								</tr>
+							{/volist}
 							</tbody>
 						</table>
 					</div>
@@ -93,16 +92,44 @@
 	<script type="text/javascript">
 		$(function(){
 			runDatetimePicker();
-      // 全选 页面调用
-      $(".table").HuicheckAll(
-        {
-          checkboxAll: 'thead input[type="checkbox"]',
-          checkbox: 'tbody input[type="checkbox"]'
-        },
-        function(checkedInfo) {
-          console.log(checkedInfo);
-        }
-      )
+		      // 全选 页面调用
+		      $(".table").HuicheckAll(
+		        {
+		          checkboxAll: 'thead input[type="checkbox"]',
+		          checkbox: 'tbody input[type="checkbox"]'
+		        },
+		        function(checkedInfo) {
+		          console.log(checkedInfo);
+		        }
+		      )
+		      // 删除
+		      $('.admin_del').click(function(){
+		      	var id = $(this).attr('data-id');
+		      	$.ajax({
+		      		url:'{:url("admin/adminDel")}',
+		      		dataType:'json',
+		      		type:'post',
+		      		data:{id:id},
+		      		success:function(data){
+		      			if (data.code == 1) {
+		      				layer.msg(data.msg,{
+		      					icon:6,
+		      					time:3000,
+		      				},function(){
+		      					location.href = data.url;
+		      				});
+		      			}else{
+		      				layer.open({
+		      					title:'删除管理员失败',
+		      					content:data.msg,
+		      					icon:5,
+		      					time:6,
+		      					anim:3000,
+		      				});
+		      			}
+		      		}
+		      	});
+		      });
 		});
 	</script>
 	<!--/请在上方写此页面业务相关的脚本-->
